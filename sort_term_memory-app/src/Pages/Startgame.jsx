@@ -9,36 +9,36 @@ const Startgame = () => {
         radio: '',
         speed: '',
     });
-    let difficulty = localStorage.getItem("difficulty");
 
-    const generateRandomNumber = () => {
-            if(difficulty==="easy"){
-              return  Math.floor(10 + Math.random(4) * 90);
-            }else if(difficulty=="medium"){
-                return  Math.floor(100 + Math.random(4) * 900);
-            }else{
-                return  Math.floor(1000 + Math.random(4) * 9000);
-            }
+    const generateRandomNumber = (min, max) => {
+        return Math.floor(10 + Math.random(4) * 90);
     };
     const naviagte = useNavigate();
 
     useEffect(() => {
+        let difficulty = localStorage.getItem("difficulty");
+        let time=5000
+        if(difficulty=="easy"){
+            time=9000
+        }else if (difficulty=="medium"){
+            time=5000
+        }else{
+            time=3000
+        }
         const interval = setInterval(() => {
             localStorage.setItem('questions', JSON.stringify(data));
             naviagte("/result");
-        }, 20000);
-
+        }, time);
         return () => clearInterval(interval);
     }, [data]);
 
     useEffect(() => {
         setData({
-            altitude: generateRandomNumber(),
-            heading: generateRandomNumber(),
-            radio: generateRandomNumber(),
-            speed: generateRandomNumber(),
+            altitude: generateRandomNumber(0, 36000),
+            heading: generateRandomNumber(0,360),
+            radio: generateRandomNumber(0,360),
+            speed: generateRandomNumber(0,300),
         });
-
     }, []);
 
     return (
